@@ -5,8 +5,8 @@ from leaflet.admin import LeafletGeoAdmin
  #Register your models here.
 
 class RidesAdmin(LeafletGeoAdmin):
-    pass
-    #list_display = ('location_name', 'location', 'destination_name', 'destination')
+
+    list_display = ('location_name', 'destination_name', 'user')
 
 
 admin.site.register(Rides, RidesAdmin)

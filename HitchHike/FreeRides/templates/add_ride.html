@@ -1,30 +1,177 @@
 {% extends "account/base.html" %}
+{% load staticfiles %}
+
+	{% block style %}
+        <style>
+        .map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 
 
+	{% endblock %}
 
 {% block content %}
+<div class="" id="output">
 
-<div id="map" class="map"></div>
+</div>
 
+	<p>{{ msg }}</p>
+
+	<div id="map" class="map"></div>
 {% endblock %}
 
-
-
 {% block script %}
+
+<script type="text/javascript" src="{% static 'jqC/jquery.cookie.js' %}"></script>
+
 <script type="text/javascript">
 
-	var map = L.map('map');
 
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {
-	attribution: '© OpenStreetMap contributors'
+var map = L.map('map', { scrollWheelZoom: false }).setView([52.219019,-1.552358], 7);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-	 L.Routing.control({
-	waypoints: [
-	L.latLng(57.74, 11.94),
-	L.latLng(57.6792, 11.949)
-	]
+var control = L.Routing.control({
+		waypoints: [
+
+		],
+    routeWhileDragging: false,
+		serviceUrl: 'http://localhost:5000/route/v1',
+		geocoder: L.Control.Geocoder.nominatim(),
+/*		plan: L.Routing.plan(waypoints, {
+			createMarker: function(i, wp) {
+				return L.marker(wp.latLng, {
+					draggable: true,
+				});
+			},
+
+			geocoder: L.Control.Geocoder.nominatim(),
+			routeWhileDragging: true
+		}), */
+
+		autoRoute: true,
+		routeWhileDragging: false,
+		routeDragTimeout: 250,
+		showAlternatives: false,
+		altLineOptions: {
+			styles: [
+				{color: 'black', opacity: 0.15, weight: 9},
+				{color: 'white', opacity: 0.8, weight: 6},
+				{color: 'blue', opacity: 0.5, weight: 2}
+			]
+		}
 	}).addTo(map);
 
+	function createButton(label, container) {
+	    var btn = L.DomUtil.create('button', '', container);
+	    btn.setAttribute('type', 'button');
+	    btn.innerHTML = label;
+	    return btn;
+	}
+
+	map.on('click', function(e) {
+	    var container = L.DomUtil.create('div'),
+	        startBtn = createButton('Start from this location', container),
+	        destBtn = createButton('Go to this location', container);
+
+	    L.popup()
+	        .setContent(container)
+	        .setLatLng(e.latlng)
+	        .openOn(map);
+
+					L.DomEvent.on(startBtn, 'click', function() {
+							control.spliceWaypoints(0, 1, e.latlng);
+							map.closePopup();
+					});
+
+					L.DomEvent.on(destBtn, 'click', function() {
+						control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
+						map.closePopup();
+				});
+	});
+
+
+
+L.easyButton('<span id="do" class="fa fa-floppy-o"></span>', function () {
+
+
+		//alert('Save routing coordinates ...');
+}).addTo(map);
+
+//L.Control.geocoder().addTo(map);
+
+L.Routing.errorControl(control).addTo(map);
+
+var user = "{{ user }}";
+
+var csrftoken = $.cookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+				if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+						xhr.setRequestHeader("X-CSRFToken", csrftoken);
+				}
+		}
+});
+
+
+$("#do").click(function(){
+	//JSON.stringify(control.getWaypoints()[0]["latLng"]["lat"]);
+	var loc_lat = control.getWaypoints()[0]["latLng"]["lat"];
+	var loc_lng = control.getWaypoints()[0]["latLng"]["lng"];
+	var loc =  "SRID=4326;POINT(" + [loc_lat + " " + loc_lng] + ")";
+	console.log(loc);
+
+
+	var dest_lat = control.getWaypoints()[1]["latLng"]["lat"];
+	var dest_lng = control.getWaypoints()[1]["latLng"]["lng"];
+	var dest = "SRID=4326;POINT(" + [dest_lat + " " + dest_lng] + ")";
+	console.log(dest);
+
+	var loc_name = JSON.stringify(control.getWaypoints()[0]["name"]);
+	var dest_name = JSON.stringify(control.getWaypoints()[1]["name"]);
+	console.log(loc_name);
+	console.log(dest_name);
+
+
+	$.ajax({
+    url:"/yes",
+		//datatype: "application/json",
+    type: "POST",
+    data: {
+					 user: user,
+					 location: loc,
+					 destination: dest,
+					 location_name: loc_name,
+					 destination_name: dest_name,
+					 csrf_token: csrftoken
+				 },
+
+    success:function(json){
+			console.log(json);
+			alert(json)
+		},
+//    complete:function(){
+//			alert("fin")
+//		},
+    error:function (xhr, textStatus, thrownError){
+        alert("error doing something: " + thrownError);
+    }
+});
+
+});
+
 </script>
+
+
 {% endblock %}

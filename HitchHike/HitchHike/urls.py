@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import include
 from django.conf.urls import url
 
+app_name = "main"
+
 urlpatterns = [
-    url('', include('FreeRides.urls')),
-    url('admin/', admin.site.urls),
-    url('accounts/', include('allauth.urls')),
+    url('', include('FreeRides.urls'), name="homepage"),
+    url('admin/', admin.site.urls, name="admin"),
+    url('accounts/', include('allauth.urls'), name="accounts"),
 ]

@@ -25,7 +25,7 @@ SECRET_KEY = '!uv4!@ik+5qsxir&6%z3*frzu%*oa0i(=^!d)nsvo$5$1*m*wi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.0.100", "localhost", "127.0.1.1"]
 
 
 # Application definition
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.gis',
     'leaflet',
+    'crispy_forms',
+    'mod_wsgi.server',
 
     'allauth',
     'allauth.account',
@@ -159,7 +161,10 @@ LEAFLET_CONFIG = {
     #'MINIMAP': True,
 }
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     #'/var/www/static/',
 ]
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")

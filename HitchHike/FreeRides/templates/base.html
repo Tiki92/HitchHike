@@ -4,37 +4,44 @@
 	{% load staticfiles %}
 
 	{% load leaflet_tags %}
-	{% leaflet_js %}
-	{% leaflet_css %}
+  {% leaflet_js %}
+  {% leaflet_css %}
 
-
-	<script type="text/javascript" src="{% static '/cluster/dist/leaflet.markercluster-src.js' %}"></script>
-	<script type="text/javascript" src="{% static '/dist/leaflet.ajax.js' %}"></script>
-	<script type="text/javascript" src="{% static '/routing/leaflet-routing-machine.js' %}"></script>
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script
+	  src="https://code.jquery.com/jquery-3.4.0.js"
+	  integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
+	  crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+	<script type="text/javascript" src="{% static 'routing/leaflet-routing-machine.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cluster/dist/leaflet.markercluster-src.js' %}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="{% static 'routing/leaflet-routing-machine.css' %}">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link rel="stylesheet" href="{% static 'cluster/dist/MarkerCluster.Default.css' %}">
-    <link rel="stylesheet" href="{% static 'cluster/dist/MarkerCluster.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'cluster/dist/MarkerCluster.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'cluster/dist/MarkerCluster.Default.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'routing/leaflet-routing-machine.css' %}">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+	<link rel="stylesheet" href="{% static 'fontA/css/font-awesome.min.css' %}">
+	{% block style %}
 
-
+	{% endblock %}
 
 	<meta charset="UTF-8">
 
 	<title>
 		{% block head_title %}
+
 		{% endblock %}
 	</title>
 
 		{% block extra_head %}
+
 		{% endblock %}
 </head>
 
 <body>
-
-
 
 	<div>
 		{% block body %}
@@ -63,7 +70,7 @@
 							<a class="nav-link" href="#">Features</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Pricing</a>
+							<a class="nav-link" href="{% url 'add_ride' %}">Add Ride</a>
 						</li>
 						{% if user.is_authenticated %}
 						<li class="nav-item">
@@ -98,11 +105,14 @@
 		</div>
 		<div>
           {% block content %}
-					{% leaflet_map "map" callback="window.map_init_basic" %}
+						{% leaflet_map "map" callback="window.map_init_basic" %}
           {% endblock %}
 
           {% endblock %}
+
+
           {% block extra_body %}
+
           {% endblock %}
 		</div>
 
@@ -111,17 +121,10 @@
 
 {% block script %}
 
-{% endblock %}
-
 <script type="text/javascript">
 
 function map_init_basic (map, options) {
 
-		var dataset = new L.geoJson.ajax("{% url 'loc_data' %}",{
-
-		});
-
-        console.log({{ dec_loc|safe }});
 		var markers = L.markerClusterGroup();
 		for (var i = 0; i < {{ dec_loc|safe }}['features'].length; i++) {
 
@@ -131,11 +134,18 @@ function map_init_basic (map, options) {
 			marker.bindPopup(title);
 			markers.addLayer(marker);
 		}
+        map.scrollWheelZoom.disable();
+
+        map.on('click', function() {
+            map.scrollWheelZoom.enable();
+        });
 
 		map.addLayer(markers);
-		//dataset.addTo(map);
+
 
 }
 </script>
 
+
 </html>
+{% endblock %}

@@ -1,1 +1,46 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
+	{% load staticfiles %}
+
+  {% load leaflet_tags %}
+  {% leaflet_js %}
+  {% leaflet_css %}
+      
+      
+      
+		  {% block content %}
+						{% leaflet_map "map" callback="window.map_init_basic" %}
+                       
+          {% endblock %}
+
+
+
+
+{% block script %}
+
+<script type="text/javascript">
+
+    function map_init_basic (map, options) {
+
+		var markers = L.markerClusterGroup();
+		for (var i = 0; i < {{ dec_loc|safe }}['features'].length; i++) {
+
+			var a = {{ dec_loc|safe }}['features'][i]['geometry']['coordinates'];
+			var title = {{ dec_loc|safe }}['features'][i]['properties']['location_name'];
+			var marker = L.marker(new L.LatLng(a[1], a[0]), { title: title });
+			marker.bindPopup(title);
+			markers.addLayer(marker);
+		}
+        map.scrollWheelZoom.disable();
+
+        map.on('click', function() {
+            map.scrollWheelZoom.enable();
+        });
+
+		map.addLayer(markers);
+
+
+}
+
+</script>
+
+{% endblock %}

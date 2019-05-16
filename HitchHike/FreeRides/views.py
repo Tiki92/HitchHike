@@ -10,17 +10,17 @@ def index(request):
     loc = serialize('geojson', Rides.objects.all())
     dec_loc = json.loads(loc)
 
-    context = {'dec_loc':dec_loc}
+    context = {'dec_loc':loc}
     return render(request, 'Home.html', context)
 
 def profile_view(request):
     user = request.user
     args = {'user':user}
-    return render(request, 'Home.html', args)
+    return render(request, 'account/Profile.html', args)
 
 def add_ride(request):
     user = request.user
-    args = {'user':user}
+    args = {'user':user, 'form':rideForm}
 
     if request.method == 'POST':
         response_data = request.POST.get('location')
@@ -44,5 +44,5 @@ def yes(request):
             form.save()
             return HttpResponse("FUCKK!!YOUUU!!")
 
-        return HttpResponse(form.errors)
+        return HttpResponse(form['ride_date'].errors)
         #request.POST.get("location")

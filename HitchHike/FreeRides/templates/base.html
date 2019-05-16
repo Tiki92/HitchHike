@@ -3,10 +3,10 @@
 <head>
 	{% load staticfiles %}
 
-	{% load leaflet_tags %}
+  {% load leaflet_tags %}
   {% leaflet_js %}
   {% leaflet_css %}
-
+    
 	<script
 	  src="https://code.jquery.com/jquery-3.4.0.js"
 	  integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
@@ -24,6 +24,8 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
 	<link rel="stylesheet" href="{% static 'fontA/css/font-awesome.min.css' %}">
+
+	
 	{% block style %}
 
 	{% endblock %}
@@ -36,15 +38,12 @@
 		{% endblock %}
 	</title>
 
-		{% block extra_head %}
-
-		{% endblock %}
 </head>
 
 <body>
 
 	<div>
-		{% block body %}
+     
       {% if messages %}
 		<div>
 			<strong>Messages:</strong>
@@ -55,6 +54,7 @@
 			</ul>
 		</div>
 		{% endif %}
+		
 		<div>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<a class="navbar-brand" href="#">HitchHike</a>
@@ -67,7 +67,7 @@
 							<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Features</a>
+							<a class="nav-link" href="/accounts/profile/">Profile</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'add_ride' %}">Add Ride</a>
@@ -103,49 +103,25 @@
 				</div>
 			</nav>
 		</div>
-		<div>
-          {% block content %}
-						{% leaflet_map "map" callback="window.map_init_basic" %}
-          {% endblock %}
-
-          {% endblock %}
-
-
-          {% block extra_body %}
-
-          {% endblock %}
-		</div>
-
 	</div>
+	
+	      {% block content %}
+						
+          {% endblock %}
+
+    
+    <div class="container">
+          {% block form %}
+          
+          {% endblock %}
+    </div>
+	
 </body>
 
 {% block script %}
 
-<script type="text/javascript">
-
-function map_init_basic (map, options) {
-
-		var markers = L.markerClusterGroup();
-		for (var i = 0; i < {{ dec_loc|safe }}['features'].length; i++) {
-
-			var a = {{ dec_loc|safe }}['features'][i]['geometry']['coordinates'];
-			var title = {{ dec_loc|safe }}['features'][i]['properties']['location_name'];
-			var marker = L.marker(new L.LatLng(a[1], a[0]), { title: title });
-			marker.bindPopup(title);
-			markers.addLayer(marker);
-		}
-        map.scrollWheelZoom.disable();
-
-        map.on('click', function() {
-            map.scrollWheelZoom.enable();
-        });
-
-		map.addLayer(markers);
 
 
-}
-</script>
-
-
-</html>
 {% endblock %}
+</html>
+

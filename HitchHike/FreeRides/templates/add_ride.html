@@ -1,177 +1,97 @@
 {% extends "account/base.html" %}
 {% load staticfiles %}
 
+
 	{% block style %}
+       <link href={% static 'datetime/css/bootstrap-datetimepicker.css' %} rel="stylesheet">
+       <script src= {% static 'datetime/js/bootstrap-datetimepicker.min.js' %}></script>
+       <script src={% static 'phone/bootstrap-formhelpers-phone.js' %}></script>
+       
         <style>
-        .map {
-            position: absolute;
+        #map {
+            padding: 250px;
             width: 100%;
             height: 100%;
         }
     </style>
-
-
 	{% endblock %}
 
-{% block content %}
-<div class="" id="output">
-
-</div>
-
+    {% block content %}
 	<p>{{ msg }}</p>
+    
+	<div id="map" class="leaflet-container-default"></div>
+	
+	{% endblock %}
 
-	<div id="map" class="map"></div>
-{% endblock %}
+		
+    {% block form %}
+    
+<div class="container" style="margin-top: 20px;">
+    <form>
+           {% csrf_token %}
+            <label for="datetime">The offer expires at:</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+            </div>
+            <input type="text" class="form-control" placeholder='Enter date and time'
+        id='datetime' readonly>
+        </div>
+            <small id="rideHelp" class="form-text text-muted">Let people know when they can contact you last about this offer.</small>
+        <br>
 
+        <label for="phoneNumber">Phone Number/Whatsapp:</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">GB</span>
+            </div>
+            <input id="phoneNumber" type="text" class="form-control bfh-phone" data-format="+4 (ddd)ddd-dddd">
+        </div>
+        <br>
+        
+        <label for="price">Price:</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">£</span>
+            </div>
+            <input id="price" type="number" onchange="setTwoNumberDecimal" min="0" max="500" step="0.25" value="0.00" class="form-control">
+        </div>
+            <small id="rideHelp" class="form-text text-muted">You can use the UP and DOWN arrows to adjust the price.</small>
+            <br>
+
+        <button id="do" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+</div>
+ 
+   
+    {% endblock %}
+   
 {% block script %}
 
 <script type="text/javascript" src="{% static 'jqC/jquery.cookie.js' %}"></script>
 
+<script type="text/javascript" src="{% static 'add_ride/add_ride.js' %}"></script>
+
+<script type="text/javascript">var user = "{{ user }}" </script>
+
 <script type="text/javascript">
 
-
-var map = L.map('map', { scrollWheelZoom: false }).setView([52.219019,-1.552358], 7);
-
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
-
-var control = L.Routing.control({
-		waypoints: [
-
-		],
-    routeWhileDragging: false,
-		serviceUrl: 'http://localhost:5000/route/v1',
-		geocoder: L.Control.Geocoder.nominatim(),
-/*		plan: L.Routing.plan(waypoints, {
-			createMarker: function(i, wp) {
-				return L.marker(wp.latLng, {
-					draggable: true,
-				});
-			},
-
-			geocoder: L.Control.Geocoder.nominatim(),
-			routeWhileDragging: true
-		}), */
-
-		autoRoute: true,
-		routeWhileDragging: false,
-		routeDragTimeout: 250,
-		showAlternatives: false,
-		altLineOptions: {
-			styles: [
-				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 6},
-				{color: 'blue', opacity: 0.5, weight: 2}
-			]
-		}
-	}).addTo(map);
-
-	function createButton(label, container) {
-	    var btn = L.DomUtil.create('button', '', container);
-	    btn.setAttribute('type', 'button');
-	    btn.innerHTML = label;
-	    return btn;
-	}
-
-	map.on('click', function(e) {
-	    var container = L.DomUtil.create('div'),
-	        startBtn = createButton('Start from this location', container),
-	        destBtn = createButton('Go to this location', container);
-
-	    L.popup()
-	        .setContent(container)
-	        .setLatLng(e.latlng)
-	        .openOn(map);
-
-					L.DomEvent.on(startBtn, 'click', function() {
-							control.spliceWaypoints(0, 1, e.latlng);
-							map.closePopup();
-					});
-
-					L.DomEvent.on(destBtn, 'click', function() {
-						control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-						map.closePopup();
-				});
-	});
-
-
-
-L.easyButton('<span id="do" class="fa fa-floppy-o"></span>', function () {
-
-
-		//alert('Save routing coordinates ...');
-}).addTo(map);
-
-//L.Control.geocoder().addTo(map);
-
-L.Routing.errorControl(control).addTo(map);
-
-var user = "{{ user }}";
-
-var csrftoken = $.cookie('csrftoken');
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    
+    
+    function setTwoNumberDecimal(event) {
+    this.value = parseFloat(this.value).toFixed(2);
 }
-
-$.ajaxSetup({
-		beforeSend: function(xhr, settings) {
-				if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-						xhr.setRequestHeader("X-CSRFToken", csrftoken);
-				}
-		}
-});
-
-
-$("#do").click(function(){
-	//JSON.stringify(control.getWaypoints()[0]["latLng"]["lat"]);
-	var loc_lat = control.getWaypoints()[0]["latLng"]["lat"];
-	var loc_lng = control.getWaypoints()[0]["latLng"]["lng"];
-	var loc =  "SRID=4326;POINT(" + [loc_lat + " " + loc_lng] + ")";
-	console.log(loc);
-
-
-	var dest_lat = control.getWaypoints()[1]["latLng"]["lat"];
-	var dest_lng = control.getWaypoints()[1]["latLng"]["lng"];
-	var dest = "SRID=4326;POINT(" + [dest_lat + " " + dest_lng] + ")";
-	console.log(dest);
-
-	var loc_name = JSON.stringify(control.getWaypoints()[0]["name"]);
-	var dest_name = JSON.stringify(control.getWaypoints()[1]["name"]);
-	console.log(loc_name);
-	console.log(dest_name);
-
-
-	$.ajax({
-    url:"/yes",
-		//datatype: "application/json",
-    type: "POST",
-    data: {
-					 user: user,
-					 location: loc,
-					 destination: dest,
-					 location_name: loc_name,
-					 destination_name: dest_name,
-					 csrf_token: csrftoken
-				 },
-
-    success:function(json){
-			console.log(json);
-			alert(json)
-		},
-//    complete:function(){
-//			alert("fin")
-//		},
-    error:function (xhr, textStatus, thrownError){
-        alert("error doing something: " + thrownError);
-    }
-});
-
-});
-
+    
+    
+    var today = new Date();
+    $("#datetime").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true,
+        todayBtn: true,
+        startDate : today
+    });
+    
+    console.log(today);
 </script>
-
 
 {% endblock %}

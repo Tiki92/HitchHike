@@ -11,11 +11,12 @@ class rideForm(forms.ModelForm):
     #location =  forms.PointField(required=False)
     #destination_name = forms.CharField(required=False)
     #destination = forms.PointField(required=False)
+    #ride_date = forms.DateTimeField()
 
 
     class Meta:
         model = Rides
-        fields = ('user', 'location', 'destination', 'location_name', 'destination_name')
+        fields = ('user', 'location', 'destination', 'location_name', 'destination_name', 'ride_date', 'price', 'phone')
 
     def save(self, commit=True):
         ride = super(rideForm, self).save(commit=False)

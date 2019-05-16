@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'leaflet',
     'crispy_forms',
     'mod_wsgi.server',
+    'phonenumber_field',
 
     'allauth',
     'allauth.account',

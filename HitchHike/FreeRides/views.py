@@ -45,4 +45,3 @@ def yes(request):
             return HttpResponse("FUCKK!!YOUUU!!")
 
         return HttpResponse(form['ride_date'].errors)
-        #request.POST.get("location")

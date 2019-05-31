@@ -12,7 +12,27 @@
                        
           {% endblock %}
 
+    {% block list %}
 
+    {% for i in "x"|rjust:"12" %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a id="item{{ forloop.counter }}" href="#">Item</a>
+          </h4>
+          <h5>$24.99</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+        </div>
+      </div>
+</div>
+{% endfor %} 
+
+		{% endblock %}
 
 
 {% block script %}
@@ -39,6 +59,13 @@
 		map.addLayer(markers);
 
 
+}
+
+for(var j = 0; j <= 11; j++) {
+    var title = {{ dec_loc|safe }}['features'][j]['properties']['location_name'];
+    j += 1;
+    document.getElementById("item" + j).innerHTML = title;
+    j -= 1;
 }
 
 </script>

@@ -27,7 +27,11 @@
 
 	
 	{% block style %}
-
+	<style>
+		#list {
+				padding: 100px;
+		}
+	</style>
 	{% endblock %}
 
 	<meta charset="UTF-8">
@@ -114,7 +118,14 @@
           {% block form %}
           
           {% endblock %}
-    </div>
+		</div>
+		
+		<div id="list" class="row">
+			{% block list %}
+
+			{% endblock %}
+
+		</div>
 	
 </body>
 

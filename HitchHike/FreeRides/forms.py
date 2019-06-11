@@ -16,7 +16,7 @@ class rideForm(forms.ModelForm):
 
     class Meta:
         model = Rides
-        fields = ('user', 'location', 'destination', 'location_name', 'destination_name', 'ride_date', 'price', 'phone')
+        fields = ('user', 'location', 'destination', 'location_name', 'destination_name', 'ride_date', 'price', 'phone', 'description')
 
     def save(self, commit=True):
         ride = super(rideForm, self).save(commit=False)

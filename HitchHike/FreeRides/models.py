@@ -13,6 +13,7 @@ class Rides(models.Model):
     ride_date = models.DateTimeField(blank=True)
     price = models.DecimalField(null=True, blank=True, max_digits=6, decimal_places=2, default=0)
     phone = models.CharField(max_length=20, null=False, blank=False, unique=False)
+    description = models.TextField(max_length=400, null=False)
 
     def __unicode__(self):
         return self.name

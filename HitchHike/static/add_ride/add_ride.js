@@ -100,10 +100,12 @@ $("#do").click(function(){
     
     var date = document.getElementById("datetime").value;
     var phone = document.getElementById("phoneNumber").value.toString();
-    var price = document.getElementById("price").value;
+	var price = document.getElementById("price").value;
+	var description = document.getElementById("description").value.toString();
     console.log(date);
     console.log(typeof phone);
-    console.log(typeof price);
+	console.log(typeof price);
+	console.log("description: " + description);
     
     var len = control.getWaypoints().length;
     console.log(len);
@@ -137,13 +139,14 @@ $("#do").click(function(){
 					 destination_name: dest_name,
                      ride_date: date,
                      phone: phone,
-                     price: price,
+					 price: price,
+					 description: description,
 					 csrf_token: csrftoken
 				 },
 
     success:function(json){
 			console.log(json);
-			alert(json)
+			alert("It Worked" + json)
 		},
 //    complete:function(){
 //			alert("fin")

@@ -1,73 +1,133 @@
 {% extends "base.html" %}
-	{% load staticfiles %}
-
+  {% load staticfiles %}
+  
   {% load leaflet_tags %}
   {% leaflet_js %}
   {% leaflet_css %}
-      
-      
-      
-		  {% block content %}
-						{% leaflet_map "map" callback="window.map_init_basic" %}
-                       
-          {% endblock %}
+
+  
+  {% block content %}
+  <style>
+      .leaflet-container-default {
+        min-height: 427px;
+        margin-top: 40px;
+        box-shadow: 0 0 20px 13px grey;
+      }
+    </style>
+
+  <div class="container" style=" ">
+  {% leaflet_map "map" callback="window.map_init_basic" %}
+  </div>
+  {% endblock %}
+  
+
+  
 
     {% block list %}
+    <div class="container">
+        <div style="margin-bottom: 55px">
+            <form class="form-inline my-2 my-lg-0" method="get" action="/">
+    
+                <button style="margin-right:10px" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" size="80" name="q">
+            </form>
+          </div>
 
-    {% for i in "x"|rjust:"12" %}
+    <div class="row-12">
+        <nav>
+          <ul class="pagination justify-content-center">
+            {% if rides.has_previous %}
+            <li class="page-item"><a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">First</a></li>
+            <li class="page-item"><a href="?page={{ rides.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Previous</a></li>
+            {% endif %}
+    
+    
+            <li class="page-item"><a class="page-link">Page {{ rides.number }} of {{ rides.paginator.num_pages }}</a></li>
+    
+    
+            {% if rides.has_next %}
+            <li class="page-item"><a href="?page={{ rides.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Next</a></li>
+            <li class="page-item"><a href="?page={{ rides.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Last</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+  <div class="row">
+    {% for ride in rides %}
     <div class="col-lg-4 col-md-6 mb-4">
       <div class="card h-100">
         <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
         <div class="card-body">
-          <h4 class="card-title">
-            <a id="item{{ forloop.counter }}" href="#">Item</a>
+          <h4>
+            {{ ride.location_name }} - {{ ride.destination_name }}
           </h4>
-          <h5>$24.99</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+          <h5 class="card-title">
+            <a href="#">{{ ride.user }}</a>
+          </h5>
+          <h5 style="color: orangered">{{ ride.ride_date }}</h5>
+          {% if ride.price == Null %}
+          <h5 style="color: rgb(23, 160, 23)">Free</h5>
+          {% else %}
+          <h5 style="color: rgb(23, 160, 23)">{{ ride.price }} £</h5>
+          {% endif %}
+  
+          <h5>{{ ride.phone }}</h5>
+          <p class="card-text">{{ ride.description }}</p>
         </div>
         <div class="card-footer">
           <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
         </div>
       </div>
-</div>
-{% endfor %} 
-
-		{% endblock %}
-
+    </div>
+    {% endfor %}
+  </div>
+  
+    <div style="align-content: center">
+      <nav>
+        <ul class="pagination justify-content-center">
+          {% if rides.has_previous %}
+          <li class="page-item"><a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">First</a></li>
+          <li class="page-item"><a href="?page={{ rides.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Previous</a></li>
+          {% endif %}
+  
+  
+          <li class="page-item"><a class="page-link">Page {{ rides.number }} of {{ rides.paginator.num_pages }}</a></li>
+  
+  
+          {% if rides.has_next %}
+          <li class="page-item"><a href="?page={{ rides.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Next</a></li>
+          <li class="page-item"><a href="?page={{ rides.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Last</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+    {% endblock %}
+  
 
 {% block script %}
 
 <script type="text/javascript">
 
-    function map_init_basic (map, options) {
+  function map_init_basic(map, options) {
 
-		var markers = L.markerClusterGroup();
-		for (var i = 0; i < {{ dec_loc|safe }}['features'].length; i++) {
-
-			var a = {{ dec_loc|safe }}['features'][i]['geometry']['coordinates'];
-			var title = {{ dec_loc|safe }}['features'][i]['properties']['location_name'];
-			var marker = L.marker(new L.LatLng(a[1], a[0]), { title: title });
-			marker.bindPopup(title);
-			markers.addLayer(marker);
+    var markers = L.markerClusterGroup();
+    for (var i = 0; i < {{ dec_loc| safe }}['features'].length; i++) {
+        var a = {{ dec_loc| safe}}['features'][i]['geometry']['coordinates'];
+        var title = {{ dec_loc| safe }}['features'][i]['properties']['location_name'];
+        var marker = L.marker(new L.LatLng(a[1], a[0]), { title: title });
+        marker.bindPopup(title);
+        markers.addLayer(marker);
 		}
-        map.scrollWheelZoom.disable();
+      map.scrollWheelZoom.disable();
 
-        map.on('click', function() {
-            map.scrollWheelZoom.enable();
-        });
+      map.on('click', function () {
+        map.scrollWheelZoom.enable();
+      });
 
-		map.addLayer(markers);
-
+      map.addLayer(markers);
 
 }
-
-for(var j = 0; j <= 11; j++) {
-    var title = {{ dec_loc|safe }}['features'][j]['properties']['location_name'];
-    j += 1;
-    document.getElementById("item" + j).innerHTML = title;
-    j -= 1;
-}
-
 </script>
 
 {% endblock %}

@@ -96,7 +96,7 @@ $.ajaxSetup({
 });
 
 
-$("#do").click(function(){
+$("#do1").click(function(){
     
     var date = document.getElementById("datetime").value;
     var phone = document.getElementById("phoneNumber").value.toString();
@@ -112,13 +112,15 @@ $("#do").click(function(){
 	//JSON.stringify(control.getWaypoints()[0]["latLng"]["lat"]);
 	var loc_lat = control.getWaypoints()[0]["latLng"]["lat"];
 	var loc_lng = control.getWaypoints()[0]["latLng"]["lng"];
-	var loc =  "SRID=4326;POINT(" + [loc_lng + " " + loc_lat] + ")";
+	var point = new GeoPoint(loc_lng, loc_lat);
+	var loc =  "SRID=4326;POINT(" + [point.getLonDec() + " " + point.getLatDec()] + ")";
 	console.log(loc);
 
 
 	var dest_lat = control.getWaypoints()[len - 1]["latLng"]["lat"];
 	var dest_lng = control.getWaypoints()[len - 1]["latLng"]["lng"];
-	var dest = "SRID=4326;POINT(" + [dest_lng + " " + dest_lat] + ")";
+	var point1 = new GeoPoint(dest_lng, dest_lat);
+	var dest = "SRID=4326;POINT(" + [point1.getLonDec + " " + point1.getLatDec] + ")";
 	console.log(dest);
 
 	var loc_name = control.getWaypoints()[0]["name"].split(",", 1)[0];

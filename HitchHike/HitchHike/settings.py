@@ -164,6 +164,8 @@ LEAFLET_CONFIG = {
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+GEOIP_PATH = os.path.join(BASE_DIR, "static/geoip")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     #'/var/www/static/',

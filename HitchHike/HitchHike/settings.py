@@ -65,6 +65,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'HitchHike.urls'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -100,7 +102,7 @@ WSGI_APPLICATION = 'HitchHike.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'geodjango',
+        'NAME': 'geodjango1',
         'USER': 'geodjango',
         'PASSWORD': 'casper16',
         'HOST': 'localhost',
@@ -148,8 +150,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 GDAL_LIBRARY_PATH = '/usr/lib/libgdal.so.20.3'
 
@@ -171,3 +172,9 @@ STATICFILES_DIRS = [
     #'/var/www/static/',
 ]
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'FreeRides/media')
+
+#AUTH_USER_MODEL = 'FreeRides.localUsers'

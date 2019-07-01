@@ -1,8 +1,27 @@
-{% extends "base.html" %}
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load account %}
 
 {% block content %}
-<div class="container">
-    <h2>{{ user }} This is your Profile!!</h2>
-</div>
-
+                <div class="container">
+                    <a href="{% url 'account_email' %}">Change E-mail</a>
+                    <a href="{% url 'account_change_password' %}">Change password</a>
+                    <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                    <div class="row">
+                      <div class="col-sm">
+                        <img src= '{{ user.localusers.image.url }}' width="240" alt="profile_picture">
+                      </div>
+                      <div style="padding-top: 60px" class="col-sm">
+                        <h5 class="mb-3">User: {{ user }}</h5>
+                        <h5 class="mb-3">Last Name: {{ user.last_name }}</h5>
+                        <h5 class="mb-3">First Name: {{ user.first_name }}</h5>
+                        <h5 class="mb-3">Email address: {{ user.email }}</h5>
+                        <h5 class="mb-3">Date joined: {{ user.date_joined }}</h5>
+                      </div>
+                      <div class="col-sm-6">
+                        
+                      </div>
+                    </div>
+                  </div>
+                
 {% endblock %}

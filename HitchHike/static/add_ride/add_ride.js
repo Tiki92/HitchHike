@@ -102,9 +102,12 @@ $("#do1").click(function(){
     var phone = document.getElementById("phoneNumber").value.toString();
 	var price = document.getElementById("price").value;
 	var description = document.getElementById("description").value.toString();
+	var seats = document.getElementById("seats").value.toString();
+	
     console.log(date);
     console.log(typeof phone);
 	console.log(typeof price);
+	console.log(seats);
 	console.log("description: " + description);
     
     var len = control.getWaypoints().length;
@@ -120,7 +123,7 @@ $("#do1").click(function(){
 	var dest_lat = control.getWaypoints()[len - 1]["latLng"]["lat"];
 	var dest_lng = control.getWaypoints()[len - 1]["latLng"]["lng"];
 	var point1 = new GeoPoint(dest_lng, dest_lat);
-	var dest = "SRID=4326;POINT(" + [point1.getLonDec + " " + point1.getLatDec] + ")";
+	var dest = "SRID=4326;POINT(" + [dest_lng + " " + dest_lat] + ")";
 	console.log(dest);
 
 	var loc_name = control.getWaypoints()[0]["name"].split(",", 1)[0];
@@ -130,7 +133,7 @@ $("#do1").click(function(){
 
 
 	$.ajax({
-    url:"/yes",
+    url:"/add_ride",
 		//datatype: "application/json",
     type: "POST",
     data: {
@@ -143,12 +146,13 @@ $("#do1").click(function(){
                      phone: phone,
 					 price: price,
 					 description: description,
+					 //seats: seats,
 					 csrf_token: csrftoken
 				 },
 
     success:function(json){
 			console.log(json);
-			alert("It Worked" + json)
+			//alert("It Worked" + json)
 		},
 //    complete:function(){
 //			alert("fin")

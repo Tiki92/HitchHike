@@ -26,9 +26,6 @@
   </div>
   {% endblock %}
   
-
-  
-
     {% block list %}
     
     <div class="container">
@@ -71,7 +68,7 @@
           </a></h4>
           {{ forloop.counter }}
           <h5 class="card-title">
-            <a href="#">{{ ride.user }}</a>
+            <a href="{% url 'profile_pk' ride.pk %}">{{ ride.user }}</a>
           </h5>
           <h5 style="color: orangered">{{ ride.ride_date }}</h5>
           {% if ride.price == Null %}

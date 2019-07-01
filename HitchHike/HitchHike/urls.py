@@ -23,4 +23,4 @@ urlpatterns = [
     url('', include('FreeRides.urls'), name="homepage"),
     url('admin/', admin.site.urls, name="admin"),
     url('accounts/', include('allauth.urls'), name="accounts"),
-]
+] 

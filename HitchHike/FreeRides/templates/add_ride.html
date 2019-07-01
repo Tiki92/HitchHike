@@ -48,6 +48,13 @@
             <input id="phoneNumber" type="text" class="form-control bfh-phone" data-format="+4 (ddd)ddd-dddd">
         </div>
         <br>
+
+        <label for="phoneNumber">Seats Availeble:</label>
+        <div class="input-group mb-3">
+            <input id="seats" type="number" min="1" max="50" name="seats" class="form-control">
+        </div>
+        <small id="rideHelp" class="form-text text-muted">Max number of seats availeble is 50.</small>
+        <br>
         
         <label for="price">Price:</label>
         <div class="input-group mb-3">
@@ -59,11 +66,12 @@
             <small id="rideHelp" class="form-text text-muted">You can use the UP and DOWN arrows to adjust the price.</small>
             <br>
         
-            <label for="phoneNumber">Description:</label>
+            <label for="description">Description:</label>
             <div class="input-group mb-3">
                 <textarea id="description" type="text" class="form-control"></textarea>
             </div>
             <br>
+            
 
         <button id="do" type="submit" class="btn btn-primary">Submit</button>
     </form>

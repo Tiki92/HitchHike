@@ -51,8 +51,7 @@ class homeView(TemplateView):
 class profile(TemplateView):
     template_name = 'account/Profile.html'
     user = ''
-
-    
+  
     def get(self, request, pk=None):
         user = 0
         if pk:
@@ -72,9 +71,7 @@ class addRide(TemplateView):
             form.cleaned_data
             post = form.save(commit=False)
             form.save()
-            return redirect('FreeRides:profile')
-
-        #return HttpResponse(form.errors)
+            return HttpResponse("Nice!!")
 
 
 

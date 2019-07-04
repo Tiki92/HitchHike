@@ -1,11 +1,10 @@
+// Some workaround for the map to load properly
 (function () {
 
     function loadmap() {
         var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true, "center": [50.9, 25.31], "zoom": 4, "minzoom": 3, "maxzoom": 18, "layers": [["OSM", "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"]], "overlays": [], "attributionprefix": null, "scale": "both", "minimap": false, "resetview": true, "tilesextent": []},
             options = {djoptions: djoptions, initfunc: loadmap,
-                       globals: false, callback: window.map_init_basic}
-            //map = L.Map.djangoMap('map', options);
-        
+                       globals: false, callback: window.map_init_basic}      
     }
     var loadevents = ["load"];
     if (loadevents.length === 0) loadmap();
@@ -14,6 +13,7 @@
     
 })();
 
+// Creating the map to add the route
 var map = L.map('map', { scrollWheelZoom: false }).setView([52.219019,-1.552358], 7);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {
@@ -22,22 +22,14 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {
 
 var control = L.Routing.control({
 		waypoints: [],
-    routeWhileDragging: false,
 		serviceUrl: 'http://localhost:5000/route/v1',
 		geocoder: L.Control.Geocoder.nominatim(),
 		autoRoute: true,
 		routeWhileDragging: false,
-		routeDragTimeout: 250,
 		showAlternatives: false,
-		altLineOptions: {
-			styles: [
-				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 6},
-				{color: 'blue', opacity: 0.5, weight: 2}
-			]
-		}
 	}).addTo(map);
 
+	// Adding on click buttons to set location and destination
 	function createButton(label, container) {
 	    var btn = L.DomUtil.create('button', '', container);
 	    btn.setAttribute('type', 'button');
@@ -54,7 +46,7 @@ var control = L.Routing.control({
 	        .setContent(container)
 	        .setLatLng(e.latlng)
 	        .openOn(map);
-
+					
 					L.DomEvent.on(startBtn, 'click', function() {
 							control.spliceWaypoints(0, 1, e.latlng);
 							map.closePopup();
@@ -66,24 +58,16 @@ var control = L.Routing.control({
 				});
 	});
 
-
-
+// Creating the save button
 L.easyButton('<span id="do1" class="fa fa-floppy-o"></span>', function () {
 
-
-		//alert('Save routing coordinates ...');
 }).addTo(map);
 
-//L.Control.geocoder().addTo(map);
-
 L.Routing.errorControl(control).addTo(map);
-
-//var user = "{{ user }}";
     
 var csrftoken = $.cookie('csrftoken');
 
 function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 

@@ -4,9 +4,6 @@
 
 {% block content %}
                 <div class="container">
-                    <a href="{% url 'account_email' %}">Change E-mail</a>
-                    <a href="{% url 'account_change_password' %}">Change password</a>
-                    <a href="{% url 'edit_profile' %}">Edit Profile</a>
                     <div class="row">
                       <div class="col-sm">
                         <img src= '{{ user.localusers.image.url }}' width="240" alt="profile_picture">

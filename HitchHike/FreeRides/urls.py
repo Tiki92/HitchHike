@@ -11,6 +11,6 @@ path('accounts/profile/', login_required(profile.as_view()), name='profile'),
 url(r'^accounts/profile/(?P<pk>\d+)/$', login_required(profile.as_view()), name='profile_pk'),
 path('add_ride', login_required(addRide.as_view()), name='add_ride'),
 re_path(r'^(?P<ride_id>\d+)/$', detailed.as_view()),
-path('accounts/profile/edit/', editProfile.as_view(), name='edit_profile'),
+path('accounts/profile/edit/', login_required(editProfile.as_view()), name='edit_profile'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

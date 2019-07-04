@@ -45,9 +45,7 @@
             <li class="page-item"><a href="?page={{ rides.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Previous</a></li>
             {% endif %}
     
-    
             <li class="page-item"><a class="page-link">Page {{ rides.number }} of {{ rides.paginator.num_pages }}</a></li>
-    
     
             {% if rides.has_next %}
             <li class="page-item"><a href="?page={{ rides.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">Next</a></li>
@@ -66,18 +64,16 @@
           <h4><a href="{{ ride.id }}">
             {{ ride.location_name }} - {{ ride.destination_name }}
           </a></h4>
-          {{ forloop.counter }}
+          
           <h5 class="card-title">
-            <a href="{% url 'profile_pk' ride.pk %}">{{ ride.user }}</a>
+              User :<a href="{% url 'profile_pk' ride.pk %}"> {{ ride.user }}</a>
           </h5>
           <h5 style="color: orangered">{{ ride.ride_date }}</h5>
-          {% if ride.price == Null %}
+          {% if ride.price == Null or ride.price < 1 %}
           <h5 style="color: rgb(23, 160, 23)">Free</h5>
           {% else %}
           <h5 style="color: rgb(23, 160, 23)">{{ ride.price }} £</h5>
           {% endif %}
-  
-          <h5>{{ ride.phone }}</h5>
           <p class="card-text">{{ ride.description }}</p>
         </div>
         <div class="card-footer">
@@ -116,14 +112,14 @@
 {% block script %}
 
 <script type="text/javascript">
+      // Getting the location of the user to show relevant results on the main map
       if({{ user_loc_lat }} && {{ user_loc_lon }}) {
         var map = L.map('map', { scrollWheelZoom: false }).setView([{{ user_loc_lat }}, {{ user_loc_lon }}], 8);
       } else {
         var map = L.map('map', { scrollWheelZoom: false }).setView([53.924560,2.916225], 5);
       }
       
-      
-
+      // Creating the map on top and placing the markers where the rides are available
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {
           attribution: '© OpenStreetMap contributors'
       }).addTo(map);
@@ -149,6 +145,7 @@
 
 <script type="text/javascript">
 
+// Creating the maps for every ride and displaying the route
 {% for ride in rides %}
 
   var miniMap = L.map('miniMap{{ forloop.counter }}', { scrollWheelZoom: false }).setView([52.219019,-1.552358], 7);

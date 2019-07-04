@@ -125,3 +125,10 @@ dmypy.json
 
 # Visual Studio
 .vscode/
+
+#Profile pictures folder
+.profile_image/
+
+.FreeRides/media/
+.FreeRides/migrations/
+.idea/

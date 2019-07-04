@@ -93,16 +93,18 @@
 							</li>
 
 							{% endif %}
+							{% if user.is_authenticated %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown link
+              Edit Profile
             </a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-									<a class="dropdown-item" href="#">Action</a>
-									<a class="dropdown-item" href="#">Another action</a>
-									<a class="dropdown-item" href="#">Something else here</a>
+									<a class="dropdown-item" href="{% url 'account_email' %}">Change E-mail</a>
+									<a class="dropdown-item" href="{% url 'account_change_password' %}">Change password</a>
+									<a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a>
 								</div>
 							</li>
+							{% endif %}
 					</ul>
 				</div>
 			</nav>

@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Rides
@@ -38,7 +39,7 @@ def index(request):
     rides = paginator.get_page(page)
 
     g = GeoIP2()
-    ip = "185.86.151.11"
+    ip = "185.86.151.11" # get_client_ip()
     user_loc_lat = g.lat_lon(ip)[0]
     user_loc_lon = g.lat_lon(ip)[1]
     

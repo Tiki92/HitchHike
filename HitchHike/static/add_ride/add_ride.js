@@ -146,13 +146,14 @@ $("#do1").click(function(){
                      phone: phone,
 					 price: price,
 					 description: description,
-					 //seats: seats,
+					 seats: seats,
 					 csrf_token: csrftoken
 				 },
 
     success:function(json){
-			console.log(json);
+			//console.log(json);
 			//alert("It Worked" + json)
+			window.location = "/"
 		},
 //    complete:function(){
 //			alert("fin")

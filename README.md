@@ -3,8 +3,8 @@
     The project its still in development and with the help of people we could deploy it and make it available for the whole wolrd.
     
 
-    
-    ![Kiku](images/home_page.png)
+
+    ![hm](images/home_page.png)
 
 
     ![Homepage](images/home_page2.png)

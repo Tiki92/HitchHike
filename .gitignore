@@ -129,6 +129,12 @@ dmypy.json
 #Profile pictures folder
 .profile_image/
 
+HitchHike/profile_image/
+HitchHike/db.sqlite3
+HitchHike/FreeRides/migrations/
+HitchHike/FreeRides/__pycache__/
+HitchHike/HitchHike/__pycache__/
+
 HitchHike/FreeRides/media/
 HitchHike/FreeRides/migrations/
 .idea/

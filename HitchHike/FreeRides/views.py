@@ -50,10 +50,8 @@ class homeView(TemplateView):
 
 class profile(TemplateView):
     template_name = 'account/Profile.html'
-    user = ''
   
     def get(self, request, pk=None):
-        user = 0
         if pk:
             user = User.objects.get(pk=pk)
         else:
@@ -78,6 +76,23 @@ class addRide(TemplateView):
 class detailed(TemplateView):
     template_name = "detailed.html"
 
+    def get(self,request, ride_id):
+        details = Rides.objects.all()
+        ride = Rides.objects.get(id=ride_id)
+        context = {'details': details, 'ride': ride}
+        return render(request, "detailed.html", context)
 
 class editProfile(TemplateView):
     template_name = 'account/edit_profile.html'
+
+    def post(self, request):
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/accounts/profile/')
+
+    def get(self, request):
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'account/edit_profile.html', args)

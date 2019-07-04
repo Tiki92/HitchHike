@@ -2,8 +2,8 @@
     This is a Django web app that allows people to help other people get from one place to another by offering them a ride.
     The project its still in development and with the help of people we could deploy it and make it available for the whole wolrd.
 ![homepage1](images/home_page.png)
-![hoepage2](images/home_page2)
-![signup](images/SignUp)
+![hoepage2](images/home_page2.png)
+![signup](images/SignUp.png)
 ![addride](images/AddRide.png)
     
  **Usage**

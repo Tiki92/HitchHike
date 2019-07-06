@@ -88,37 +88,27 @@ $("#do1").click(function(){
 	var description = document.getElementById("description").value.toString();
 	var seats = document.getElementById("seats").value.toString();
 	
-    console.log(date);
-    console.log(typeof phone);
-	console.log(typeof price);
-	console.log(seats);
-	console.log("description: " + description);
     
     var len = control.getWaypoints().length;
-    console.log(len);
-	//JSON.stringify(control.getWaypoints()[0]["latLng"]["lat"]);
+
 	var loc_lat = control.getWaypoints()[0]["latLng"]["lat"];
 	var loc_lng = control.getWaypoints()[0]["latLng"]["lng"];
 	var point = new GeoPoint(loc_lng, loc_lat);
 	var loc =  "SRID=4326;POINT(" + [point.getLonDec() + " " + point.getLatDec()] + ")";
-	console.log(loc);
+
 
 
 	var dest_lat = control.getWaypoints()[len - 1]["latLng"]["lat"];
 	var dest_lng = control.getWaypoints()[len - 1]["latLng"]["lng"];
 	var point1 = new GeoPoint(dest_lng, dest_lat);
 	var dest = "SRID=4326;POINT(" + [dest_lng + " " + dest_lat] + ")";
-	console.log(dest);
+
 
 	var loc_name = control.getWaypoints()[0]["name"].split(",", 1)[0];
 	var dest_name = control.getWaypoints()[len - 1]["name"].split(",", 1)[0];
-	console.log(loc_name);
-	console.log(dest_name);
-
 
 	$.ajax({
     url:"/add_ride",
-		//datatype: "application/json",
     type: "POST",
     data: {
 					 user: user,
@@ -135,13 +125,8 @@ $("#do1").click(function(){
 				 },
 
     success:function(json){
-			//console.log(json);
-			//alert("It Worked" + json)
 			window.location = "/"
 		},
-//    complete:function(){
-//			alert("fin")
-//		},
     error:function (xhr, textStatus, thrownError){
         alert("error doing something: " + thrownError);
     }

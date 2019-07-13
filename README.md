@@ -37,6 +37,6 @@ The project its still in development and with the help of people we could deploy
    MEDIA_URL = '/media/'
    MEDIA_ROOT = os.path.join(BASE_DIR, 'FreeRides/media')
    of the bottom at the page.
-   8.  Run `python manage.py makemigrations` and `python manage.py migrate`
+   8.  Run `python manage.py makemigrations`, `python manage.py makemigrations FreeRides` and `python manage.py migrate`
    7.  Go to HitchHike and run python manage.py runserver
    

@@ -6,7 +6,7 @@ The project its still in development and with the help of people we could deploy
 **You can have a look here:**  [HitchHike photos](https://tiki92.github.io/HitchHike/)
 
     
- **Usage**
+ **Installation on Linux**
    1.  Clone the reposetory
    - Install apache-dev `sudo apt-get install apache2-dev`
    - Install libgdal `sudo apt-get install libgdal-dev gdal-bin libproj-dev`

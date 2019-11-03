@@ -10,6 +10,19 @@
        <script src="{% static 'geopoint_master/geopoint.js' %}"></script>    
        <link href="{% static 'add_ride/add_ride.css' %}" rel="stylesheet">
 
+       <style>
+	    nav {
+		    background-color: #2196f3 !important;
+	        }
+		#list {
+				padding: 10px;
+		}
+
+		.pagination li a {
+			color: #ffffff;
+		}
+	</style>
+
 	{% endblock %}
 
     {% block form %}
@@ -36,18 +49,18 @@
         <div class="input-group mb-3">
             <div class="input-group-prepend">
             </div>
-            <input type="text" class="form-control" placeholder='Enter date and time'
+            <input type="text" class="form-control" placeholder='Enter date at the bottom of the page'
         id='datetime' readonly>
         </div>
             <small id="rideHelp" class="form-text text-muted">Let people know when they can contact you last about this offer.</small>
         <br>
 
         <label for="phoneNumber">Phone Number/Whatsapp:</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">GB</span>
-            </div>
-            <input id="phoneNumber" type="text" class="form-control bfh-phone" data-format="+4 (ddd)ddd-dddd">
+        <div class="row">
+            
+                <p class="input-group-text col s0">GB</p>
+            
+            <input id="phoneNumber" type="text" class="form-control bfh-phone col s10" data-format="+4 (ddd)ddd-dddd">
         </div>
         <br>
 
@@ -59,11 +72,11 @@
         <br>
         
         <label for="price">Price:</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">£</span>
-            </div>
-            <input id="price" type="number" onchange="setTwoNumberDecimal" min="0" max="500" step="0.25" value="0.00" class="form-control">
+        <div class="row">
+           
+                <p class="input-group-text col s0">£</p>
+            
+            <input id="price" type="number" onchange="setTwoNumberDecimal" min="0" max="500" step="0.25" value="0.00" class="form-control col s10">
         </div>
             <small id="rideHelp" class="form-text text-muted">You can use the UP and DOWN arrows to adjust the price.</small>
             <br>

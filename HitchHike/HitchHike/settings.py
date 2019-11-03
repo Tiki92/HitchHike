@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'add your secret key'
+SECRET_KEY = '!uv4!@ik+5qsxir&6%z3*frzu%*oa0i(=^!d)nsvo$5$1*m*wi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.1.1"]
+ALLOWED_HOSTS = ["192.168.0.100", "localhost", "127.0.1.1"]
 
 
 # Application definition
@@ -92,7 +92,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-WSGI_APPLICATION = 'HitchHike.wsgi.application'
+# WSGI_APPLICATION = 'HitchHike.wsgi.application'
 
 #LOGIN_REDIRECT_URL = "/"
 
@@ -102,10 +102,10 @@ WSGI_APPLICATION = 'HitchHike.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'The name of your database',
-        'USER': 'the name of the owner of that database',
-        'PASSWORD': 'password',
-        'HOST': 'ip adress or localhost',
+        'NAME': 'geodjango1',
+        'USER': 'geodjango',
+        'PASSWORD': 'casper16',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
@@ -160,7 +160,7 @@ LEAFLET_CONFIG = {
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
     'SCALE': 'both',
-    #'MINIMAP': True,   Uncomment to show a minimap on the home page
+    #'MINIMAP': True,
 }
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -172,6 +172,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 
-# Use to store profile pictures
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'FreeRides/media')
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'FreeRides/media')

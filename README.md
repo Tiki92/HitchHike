@@ -14,11 +14,11 @@ The project its still in development and with the help of people we could deploy
    
    2.  Create virtual enviroment with python3.6
        - Change directory to HitchHike `cd HitchHike`
-       - Create an virtual enviroment `virutalenv -p python3.6 venv`
+       - Create an virtual enviroment `virtualenv -p python3.6 venv`
    3.  Activate virtual enviroment
        - `source venv/bin/activate`
    4.  pip install requirements.txt
-       - `pip install -r requrements.txt`
+       - `pip install -r requirements.txt`
    5.  Set up a [postgresql](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04) database
    -  Install postgis `sudo apt-get install postgresql-10-postgis-2.4`
    -  Install postgis-scripts `sudo apt-get install postgis postgresql-9.3-postgis-scripts`
